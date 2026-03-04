@@ -1,0 +1,3 @@
+-- Intentionally left empty.
+-- Initialization is handled by lazy.nvim via `opts` in the plugin spec,
+-- which calls require("clipboard").setup(opts) automatically.
