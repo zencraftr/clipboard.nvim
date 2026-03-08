@@ -1,17 +1,23 @@
 {
+  "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
   "runtime": {
-    "version": "Lua 5.1",
+    "version": "LuaJIT",
     "path": [
       "?.lua",
-      "?/init.lua"
+      "?/init.lua",
+      "spec/?.lua",
+      "spec/?/init.lua"
     ]
   },
   "diagnostics": {
     "globals": [
-      "vim"
+      "vim",
+      "MiniTest"
     ]
   },
   "workspace": {
-    "library": []
+    "library": [],
+    "ignoreSubmodules": false,
+    "checkThirdParty": false
   }
 }

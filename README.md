@@ -8,6 +8,9 @@
 <div align="center">
 
 [![Lua Type Check](https://github.com/zencraftr/clipboard.nvim/actions/workflows/typecheck.yml/badge.svg?branch=main)](https://github.com/zencraftr/clipboard.nvim/actions/workflows/typecheck.yml)
+[![Test](https://github.com/zencraftr/clipboard.nvim/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/zencraftr/clipboard.nvim/actions/workflows/test.yml)
+
+</div>
 
 Lightweight clipboard history manager for Neovim with a floating picker and quick paste support from the clipboard history. 
 
