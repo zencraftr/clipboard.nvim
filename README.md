@@ -1,24 +1,31 @@
+<div align="center">
+
 # 📋 `clipboard.nvim`
 
+</div>
+
+
+<div align="center">
+
 [![Lua Type Check](https://github.com/zencraftr/clipboard.nvim/actions/workflows/typecheck.yml/badge.svg?branch=main)](https://github.com/zencraftr/clipboard.nvim/actions/workflows/typecheck.yml)
+[![Test](https://github.com/zencraftr/clipboard.nvim/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/zencraftr/clipboard.nvim/actions/workflows/test.yml)
+
+</div>
 
 Lightweight clipboard history manager for Neovim with a floating picker and quick paste support from the clipboard history. 
 
+![Clipboard Picker Preview](https://github.com/zencraftr/clipboard.nvim/blob/main/assets/preview.png)
+
 ## ✨ Features
 
-<!-- toc:start -->
-
-| Description | Progress |
-| ----------- | :------: |
-| Yank a clipboard history entry to the clipboard, ready to be pasted. | ✅ |
-| Insert an entry directly into the buffer last buffer. | ✅ | 
-
-<!-- toc:end -->
+- 💾 Yank an entry from the clipboard history to your clipboard, ready to be pasted.
+- ✏️ Insert an entry directly from the clipboard history directly to the current buffer. 
+- 🔔 Customise or disable the notification when you copy an entry from the clipboard. 
 
 ## ⚡ Requirements 
 
 - **Neovim** >= 0.9.4, see [`snacks.nvim` requirements](https://github.com/folke/snacks.nvim/?tab=readme-ov-file#%EF%B8%8F-requirements).
-- **[cliphist](https://github.com/sentriz/cliphist)**, external clipboard history manager.
+- **[clipse](https://github.com/savedra1/clipse)**, a configurable TUI clipboard manager for Unix.
 
 ## 📦 Installation 
 
@@ -41,24 +48,19 @@ Install the plugin with your package manager:
     },
 
     opts = {
-        -- Your configuration comes here or leave it empty to use the default settings.
-        picker = "snacks",
+        -- Your configuration comes here; or leave it empty to use the default options.
     },
-
 
 	keys = {
 		{ "<leader>yy", "<cmd>ClipboardHistory<cr>", desc = "Yank history to clipboard" },
 		{ "<leader>yi", "<cmd>ClipboardInsert<cr>", desc = "Insert clipboard history" },
 	},
-
-
 }
 ```
 
 > [!caution]
-> `cliphist` is an external executable. It is the user's responsibility to ensure that it is running while using this plugin. We recommend configuring `cliphist` to run as a daemon at system startup.  
+> `clipse` is an external executable, and it's the user's responsibility to ensure it runs while using this plugin.
 > 
-> **Note:** `cliphist` is Wayland specific, and wouldn't work on X11.
 
 ## ⚙️ Configuration 
 
@@ -70,17 +72,24 @@ Below is the schema of the possible options to customise `clipboard.nvim`.
 
 ```lua
 {
-    picker = "snacks",  -- picker provider ("snacks" is currently the only supported option)
+	-- Clipboard provider ("clipse" is currently the only supported option)
+	source = "clipse",
+
+	-- Picker provider ("snacks" is currently the only supported option)
+	picker = "snacks",
+
+	-- Possible values for notification:
+	-- false                Disable notifications
+	-- true                 Use the default message and annotation
+	-- { msg, annote }      Define a custom message and annotation
+	notification = {
+		msg = "Copied to clipboard",
+		annote = "clipboard",
+	},
 }
 ```
 
 <!-- config:end -->
 
 </details>
-
-## 🔗 Links
-
-- **[cliphist](https://github.com/sentriz/cliphist)** — Clipboard history manager that this plugin integrates with.
-- **[snacks.nvim](https://github.com/folke/snacks.nvim)** — Neovim plugin providing the picker UI.
-
 
