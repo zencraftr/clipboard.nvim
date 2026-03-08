@@ -1,5 +1,2 @@
-*.swp
-*.swo
-.DS_Store
-doc/tags
-.luacov
+# exclude mini.nvim
+deps/

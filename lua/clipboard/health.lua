@@ -9,6 +9,8 @@ local function check_executable(cmd)
 	return vim.fn.executable(cmd) == 1
 end
 
+---Validates that all required external dependencies are present.
+---@return nil
 local function check_requirements()
 	-- cliphist package
 	if check_executable("cliphist") then
@@ -25,23 +27,8 @@ local function check_requirements()
 	end
 end
 
-local function check_config()
-	local config = require("clipboard.config")
-	if not config.opts then
-		vim.health.error("setup() has not been called. Add `opts = {}` to your plugin spec.")
-		return
-	end
-	if config.opts.picker == "snacks" then
-		vim.health.ok('picker = "snacks"')
-	else
-		vim.health.warn('Unknown picker: "' .. tostring(config.opts.picker) .. '". Only "snacks" is supported.')
-	end
-end
-
+---Performs a `:checkhealth` check `clipboard.nvim`.
 function M.check()
-	vim.health.start("Configuration")
-	check_config()
-
 	vim.health.start("Requirements")
 	check_requirements()
 end
