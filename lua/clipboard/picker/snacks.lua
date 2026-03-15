@@ -10,8 +10,8 @@ function M.pick(on_select)
 
 	require("snacks.picker").pick("clipse_history", {
 		title = "Clipboard History",
-
 		layout = { preset = "default", preview = true },
+		preview = "preview",
 
 		items = entries,
 
@@ -21,8 +21,6 @@ function M.pick(on_select)
 				{ item.text, "SnacksPickerItem" },
 			}
 		end,
-
-		preview = "preview",
 
 		confirm = function(picker, entry)
 			picker:close()

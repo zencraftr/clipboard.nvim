@@ -35,7 +35,7 @@ end
 ---@return nil
 function M.insert_clipboard()
 	require("clipboard.picker." .. config.opts.picker).pick(function(text)
-		vim.api.nvim_put({ text }, "c", true, true)
+		vim.api.nvim_paste(text, true, -1)
 		M.notify()
 	end)
 end
