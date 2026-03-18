@@ -14,6 +14,7 @@ T["health"] = MiniTest.new_set()
 
 T["health"]["reports ok when clipse executable is found"] = function()
 	child.lua([[
+		Config.setup({ source = "clipse" })
 		vim.fn.executable = function(cmd)
 			if cmd == "clipse" then return 1 end
 			return 0
@@ -26,6 +27,7 @@ end
 
 T["health"]["reports error when clipse executable is not found"] = function()
 	child.lua([[
+		Config.setup({ source = "clipse" })
 		vim.fn.executable = function(cmd)
 			if cmd == "clipse" then return 0 end
 			return 1

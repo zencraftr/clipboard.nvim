@@ -4,7 +4,6 @@
 
 </div>
 
-
 <div align="center">
 
 [![Lua Type Check](https://github.com/zencraftr/clipboard.nvim/actions/workflows/typecheck.yml/badge.svg?branch=main)](https://github.com/zencraftr/clipboard.nvim/actions/workflows/typecheck.yml)
@@ -12,20 +11,24 @@
 
 </div>
 
-Lightweight clipboard history manager for Neovim with a floating picker and quick paste support from the clipboard history. 
+A lightweight clipboard history manager for Neovim with a floating picker and quick paste support from the clipboard history. 
 
 ![Clipboard Picker Preview](https://github.com/zencraftr/clipboard.nvim/blob/main/assets/preview.png)
 
 ## ✨ Features
 
-- 💾 Yank an entry from the clipboard history to your clipboard, ready to be pasted.
-- ✏️ Insert an entry directly from the clipboard history directly to the current buffer. 
-- 🔔 Customise or disable the notification when you copy an entry from the clipboard. 
+- 💾 Yank a previous entry.
+- ✏️ Insert a previous entry on your coursor.
+- 🔔 Customise or disable the notifications.
 
 ## ⚡ Requirements 
 
 - **Neovim** >= 0.9.4, see [`snacks.nvim` requirements](https://github.com/folke/snacks.nvim/?tab=readme-ov-file#%EF%B8%8F-requirements).
+
+To have support for text from outside of Neovim (optional):
 - **[clipse](https://github.com/savedra1/clipse)**, a configurable TUI clipboard manager for Unix.
+> [!caution]
+> `clipse` is an external executable, and it's the user's responsibility to ensure it runs while using this plugin.
 
 ## 📦 Installation 
 
@@ -34,7 +37,7 @@ Install the plugin with your package manager:
 ### 💤 [lazy.nvim](https://github.com/folke/lazy.nvim)
 
 > [!important]
-> This plugin requires [Snacks](https://github.com/folke/snacks.nvim) for the clipboard history picker.
+> This plugin requires [snacks.nvim](https://github.com/folke/snacks.nvim) for the clipboard history picker.
 
 > [!tip]
 > Run `:checkhealth clipboard` to verify all dependencies are installed and configured correctly.
@@ -58,9 +61,6 @@ Install the plugin with your package manager:
 }
 ```
 
-> [!caution]
-> `clipse` is an external executable, and it's the user's responsibility to ensure it runs while using this plugin.
-> 
 
 ## ⚙️ Configuration 
 
@@ -72,8 +72,10 @@ Below is the schema of the possible options to customise `clipboard.nvim`.
 
 ```lua
 {
-	-- Clipboard provider ("clipse" is currently the only supported option)
-	source = "clipse",
+	-- Clipboard provider options:
+	-- native				Internal clipboard manager (supports yanked text in Neovim)
+	-- clipse				TUI clipboard manager (supports external yanked text)
+	source = "native",
 
 	-- Picker provider ("snacks" is currently the only supported option)
 	picker = "snacks",
@@ -84,7 +86,7 @@ Below is the schema of the possible options to customise `clipboard.nvim`.
 	-- { msg, annote }      Define a custom message and annotation
 	notification = {
 		msg = "Copied to clipboard",
-		annote = "clipboard",
+		annote = "Clipboard",
 	},
 }
 ```

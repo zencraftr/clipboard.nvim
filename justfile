@@ -13,5 +13,5 @@ test-file FILE:
 
 # Run CI locally (runs all tests and checks formatting)
 act:
-	act
+	act --quiet
 

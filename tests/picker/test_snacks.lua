@@ -19,7 +19,7 @@ T["snacks"] = MiniTest.new_set()
 
 T["snacks"]["pick() calls snacks.picker.pick with correct name"] = function()
 	child.lua([[SnacksPicker.pick(function() end)]])
-	equal(child.lua_get([[_G._picker_calls[1].name]]), "clipse_history")
+	equal(child.lua_get([[_G._picker_calls[1].name]]), "ClipboardHistory")
 end
 
 T["snacks"]["pick() passes correct title"] = function()
@@ -29,6 +29,9 @@ end
 
 T["snacks"]["pick() passes entries as items from source"] = function()
 	child.lua([[
+		-- Use clipse source so entries come from the mocked temp directory
+		Config.setup({ source = "clipse" })
+
 		local history = vim.json.encode({
 			clipboardHistory = {
 				{ value = "Entry one" },

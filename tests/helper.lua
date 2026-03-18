@@ -69,6 +69,42 @@ Helpers.new_child_neovim = function()
 		]])
 	end
 
+	-- Like clean(), but mocks vim.fn.stdpath("data") before any clipboard module is loaded so
+	-- that the native source writes its history file to a temporary directory instead of the
+	-- real Neovim data directory.
+	child.clean_native = function()
+		child.restart({ "-u", "scripts/minimal_init.lua" })
+		child.bo.readonly = false
+		child.lua([[
+			-- Create a temp dir and redirect stdpath("data") to it before requiring any
+			-- clipboard module, so native.lua picks up the mocked path at load time.
+			_G._test_native_dir = vim.fn.tempname()
+			vim.fn.mkdir(_G._test_native_dir, "p")
+
+			_G._original_stdpath = vim.fn.stdpath
+			vim.fn.stdpath = function(what)
+				if what == "data" then return _G._test_native_dir end
+				return _G._original_stdpath(what)
+			end
+
+			M = require('clipboard')
+
+			Config = require('clipboard.config')
+			Config.setup()
+
+			Core = require('clipboard.core')
+			Health = require('clipboard.health')
+			Native = require('clipboard.source.native')
+		]])
+	end
+
+	child.restore_native_dir = function()
+		child.lua([[
+			vim.fn.stdpath = _G._original_stdpath
+			vim.fn.delete(_G._test_native_dir, "rf")
+		]])
+	end
+
 	child.mock_snacks_picker = function()
 		child.lua([[
 			_G._picker_calls = {}

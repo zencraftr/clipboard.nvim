@@ -27,6 +27,7 @@ end
 function M.yank_clipboard()
 	require("clipboard.picker." .. config.opts.picker).pick(function(text)
 		vim.fn.setreg("+", text)
+		vim.fn.setreg('"', text)
 		M.notify()
 	end)
 end
