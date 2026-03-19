@@ -7,10 +7,8 @@ local T = MiniTest.new_set({
 		pre_once = child.start,
 		pre_case = function()
 			child.clean()
-			child.mock_clipse_dir()
 			child.mock_snacks_picker()
 		end,
-		post_case = child.restore_clipse_dir,
 		post_once = child.stop,
 	},
 })
@@ -46,13 +44,6 @@ T["yank_clipboard"] = MiniTest.new_set()
 
 T["yank_clipboard"]["opens picker and yanks selected text to clipboard"] = function()
 	child.lua([[
-		local history = vim.json.encode({
-			clipboardHistory = {
-				{ value = "Yanked text" },
-			}
-		})
-		vim.fn.writefile({ history }, _G._test_clipse_dir .. "/clipboard_history.json")
-
 		-- Mock clipboard register for CI environments without clipboard provider
 		_G._clipboard_plus = ""
 		local orig_setreg = vim.fn.setreg
@@ -100,15 +91,6 @@ end
 T["insert_clipboard"] = MiniTest.new_set()
 
 T["insert_clipboard"]["opens picker and inserts selected text at cursor"] = function()
-	child.lua([[
-		local history = vim.json.encode({
-			clipboardHistory = {
-				{ value = "Inserted text" },
-			}
-		})
-		vim.fn.writefile({ history }, _G._test_clipse_dir .. "/clipboard_history.json")
-	]])
-
 	child.notify()
 	child.lua([[Core.insert_clipboard()]])
 

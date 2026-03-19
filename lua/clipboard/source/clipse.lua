@@ -1,37 +1,35 @@
-local M = {}
+local util = require("clipboard.utils")
 
-local config = require("clipboard.config")
+local M = {}
 
 M.name = "clipse"
 
-local function trim(s)
-	return s:match("^[ \n]*(.-[ \n]*)$")
-end
+-- Default history file location used when no custom path is set in the clipse config.
+local _default_history_file = "~/.config/clipse/clipboard_history.json"
 
+---Get the clipse history file specified in the clipse configuration, falling back to the
+---default path when no config is present or the config does not specify a custom file.
+---@return string filePath The clipboard history file path.
 local function get_clipse_history_file()
 	local config_file = vim.fn.expand("~/.config/clipse/config.json")
 
 	if vim.fn.filereadable(config_file) == 0 then
-		return nil
+		return vim.fn.expand(_default_history_file)
 	end
 
 	local raw = table.concat(vim.fn.readfile(config_file), "\n")
 	local ok, data = pcall(vim.json.decode, raw)
-	if not ok then
-		return nil
+	if not ok or not data.historyFile then
+		return vim.fn.expand(_default_history_file)
 	end
 
-	if not data.historyFile then
-		return nil
-	end
-
-	return "~/.config/clipse/" .. data.historyFile
+	return vim.fn.expand("~/.config/clipse/" .. data.historyFile)
 end
 
 ---Fetches clipboard history entries from clipse.
----@return table[] entries
+---@return table[] entries The clipboard history entries
 function M.get_entries()
-	local path = vim.fn.expand(get_clipse_history_file() or "~/.config/clipse/clipboard_history.json")
+	local path = get_clipse_history_file()
 
 	if vim.fn.filereadable(path) == 0 then
 		return {}
@@ -46,7 +44,7 @@ function M.get_entries()
 	local entries = {}
 
 	for i, entry in ipairs(data.clipboardHistory) do
-		local text = trim(entry.value)
+		local text = util.trim(entry.value)
 		if text ~= "" then
 			table.insert(entries, { text = text, value = text, idx = i, preview = { text = text, ft = "text" } })
 		end

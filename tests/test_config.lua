@@ -18,7 +18,7 @@ end
 
 T["config"]["defaults have correct values"] = function()
 	equal(child.lua_get([[Config.defaults.picker]]), "snacks")
-	equal(child.lua_get([[Config.defaults.source]]), "clipse")
+	equal(child.lua_get([[Config.defaults.source]]), "native")
 	equal(child.lua_get([[Config.defaults.notification]]), { msg = "Copied to clipboard", annote = "Clipboard" })
 end
 

@@ -28,7 +28,7 @@ local function check_configuration()
 	end
 
 	-- source provider
-	if config.opts.source == "clipse" then
+	if config.opts.source == "clipse" or config.opts.source == "native" then
 		vim.health.ok("{" .. tostring(config.opts.source) .. "} source option.")
 	else
 		vim.health.error("{" .. tostring(config.opts.source) .. "} invalid source option.")
@@ -52,7 +52,9 @@ end
 ---@return nil
 local function check_requirements()
 	-- clipboard source package
-	if check_executable(config.opts.source) then
+	if config.opts.source == "native" then
+		vim.health.ok("{native} not requiring external programs.")
+	elseif check_executable(config.opts.source) then
 		vim.health.ok("{" .. config.opts.source .. "} found.")
 	else
 		vim.health.error("{" .. config.opts.source .. "} not found.")
@@ -67,6 +69,7 @@ local function check_requirements()
 end
 
 ---Performs a `:checkhealth` check `clipboard.nvim`.
+---@return nil
 function M.check()
 	vim.health.start("Configuration")
 	check_configuration()
