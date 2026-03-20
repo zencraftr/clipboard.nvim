@@ -10,21 +10,6 @@ local M = {}
 
 M.name = "native"
 
----Fetches clipboard history entries from native clipboard history.
----@return table[] entries The clipboard history entries
-function M.get_entries()
-	local entries = {}
-
-	for i, entry in ipairs(_history) do
-		local text = util.trim(entry.text)
-		if text ~= "" then
-			table.insert(entries, { text = text, value = text, idx = i, preview = { text = text, ft = entry.ft } })
-		end
-	end
-
-	return entries
-end
-
 ---Save clipboard history to a json file.
 ---@return nil
 local function _save()
@@ -111,6 +96,28 @@ function M.setup()
 	_load()
 
 	_setup_commands()
+end
+
+---Fetches clipboard history entries from native clipboard history.
+---@return table[] entries The clipboard history entries
+function M.get_entries()
+	local entries = {}
+
+	for i, entry in ipairs(_history) do
+		local text = util.trim(entry.text)
+		if text ~= "" then
+			table.insert(entries, { text = text, value = text, idx = i, preview = { text = text, ft = entry.ft } })
+		end
+	end
+
+	return entries
+end
+
+---Clears the current clipboard history.
+---@return nil
+function M.clear()
+	_history = {}
+	_save()
 end
 
 return M

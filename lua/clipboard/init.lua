@@ -15,10 +15,14 @@ local function setup_commands()
 	vim.api.nvim_create_user_command("ClipboardInsert", function()
 		core.insert_clipboard()
 	end, { desc = "Insert clipboard history" })
+
+	vim.api.nvim_create_user_command("ClipboardClear", function()
+		core.clear_clipboard()
+	end, { desc = "Clear clipboard history" })
 end
 
 ---Setup the plugin.
----@param custom_opts Config
+---@param custom_opts ClipboardConfig
 ---@return nil
 function M.setup(custom_opts)
 	config.setup(custom_opts)

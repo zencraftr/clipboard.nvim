@@ -195,4 +195,52 @@ T["native"]["TextYankPost saves history to file after yank"] = function()
 	equal(entries[1].text, "persisted text")
 end
 
+T["native"]["clear() empties the in-memory history"] = function()
+	child.lua([[
+		vim.api.nvim_buf_set_lines(0, 0, -1, false, { "some text" })
+		vim.cmd("normal! yy")
+	]])
+	equal(#child.lua_get([[Native.get_entries()]]), 1)
+
+	child.lua([[Native.clear()]])
+
+	equal(child.lua_get([[Native.get_entries()]]), {})
+end
+
+T["native"]["clear() persists the cleared state to disk"] = function()
+	child.lua([[
+		vim.api.nvim_buf_set_lines(0, 0, -1, false, { "persisted text" })
+		vim.cmd("normal! yy")
+	]])
+
+	child.lua([[Native.clear()]])
+
+	-- Reload native from disk to verify the cleared state survived a restart
+	child.lua([[
+		package.loaded["clipboard.source.native"] = nil
+		Native = require("clipboard.source.native")
+		Native.setup()
+	]])
+
+	equal(child.lua_get([[Native.get_entries()]]), {})
+end
+
+T["native"]["clear() allows new entries to be added after clearing"] = function()
+	child.lua([[
+		vim.api.nvim_buf_set_lines(0, 0, -1, false, { "old text" })
+		vim.cmd("normal! yy")
+	]])
+
+	child.lua([[Native.clear()]])
+
+	child.lua([[
+		vim.api.nvim_buf_set_lines(0, 0, -1, false, { "new text" })
+		vim.cmd("normal! yy")
+	]])
+
+	local entries = child.lua_get([[Native.get_entries()]])
+	equal(#entries, 1)
+	equal(entries[1].text, "new text")
+end
+
 return T

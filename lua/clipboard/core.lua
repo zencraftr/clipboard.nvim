@@ -2,24 +2,21 @@ local M = {}
 
 local config = require("clipboard.config")
 
----Sends a notification based on config.
+---Send a notification
+---@param key string The type of notification to send ("msg", "clr")
 ---@return nil
-function M.notify()
-	-- If notification is a table, use the custom msg and annote
-	if type(config.opts.notification) == "table" then
-		vim.notify(config.opts.notification.msg, vim.log.levels.INFO, { annote = config.opts.notification.annote })
+local function _notify(key)
+	if not config.opts.notification then
 		return
 	end
 
-	-- If notification is true, use defaults
-	if config.opts.notification then
-		vim.notify(
-			config.defaults.notification.msg,
-			vim.log.levels.INFO,
-			{ annote = config.defaults.notification.annote }
-		)
-		return
-	end
+	local msg = type(config.opts.notification) == "table" and config.opts.notification[key]
+		or config.defaults.notification[key]
+
+	local annote = type(config.opts.notification) == "table" and config.opts.notification.annote
+		or config.defaults.notification.annote
+
+	vim.notify(msg, vim.log.levels.INFO, { annote = annote })
 end
 
 ---Opens the clipboard history picker and yanks the selected item to the clipboard.
@@ -28,7 +25,7 @@ function M.yank_clipboard()
 	require("clipboard.picker." .. config.opts.picker).pick(function(text)
 		vim.fn.setreg("+", text)
 		vim.fn.setreg('"', text)
-		M.notify()
+		_notify("msg")
 	end)
 end
 
@@ -37,8 +34,15 @@ end
 function M.insert_clipboard()
 	require("clipboard.picker." .. config.opts.picker).pick(function(text)
 		vim.api.nvim_paste(text, true, -1)
-		M.notify()
+		_notify("msg")
 	end)
+end
+
+---Clears the clipboard history to a clean slate.
+---@return nil
+function M.clear_clipboard()
+	require("clipboard.source." .. config.opts.source).clear()
+	_notify("clr")
 end
 
 return M

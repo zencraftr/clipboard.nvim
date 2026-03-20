@@ -140,4 +140,19 @@ T["clipse"]["falls back to default when config has no historyFile field"] = func
 	equal(entries[1].text, "Fallback default file entry")
 end
 
+T["clipse"]["clear() invokes clipse with the -clear-all flag"] = function()
+	child.lua([[
+		_G._system_calls = {}
+		vim.system = function(cmd)
+			table.insert(_G._system_calls, cmd)
+		end
+	]])
+
+	child.lua([[Clipse.clear()]])
+
+	local calls = child.lua_get([[_G._system_calls]])
+	equal(#calls, 1)
+	equal(calls[1], { "clipse", "-clear-all" })
+end
+
 return T

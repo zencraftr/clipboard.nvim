@@ -57,6 +57,12 @@ T["health"]["reports ok for valid source option clipse"] = function()
 	equal(vim.tbl_contains(results.ok, "{clipse} source option."), true)
 end
 
+T["health"]["reports ok for valid source option native"] = function()
+	-- default source is "native"
+	local results = child.check_health()
+	equal(vim.tbl_contains(results.ok, "{native} source option."), true)
+end
+
 T["health"]["reports error for invalid source option"] = function()
 	child.lua([[Config.setup({ source = "invalid" })]])
 
@@ -64,7 +70,37 @@ T["health"]["reports error for invalid source option"] = function()
 	equal(vim.tbl_contains(results.error, "{invalid} invalid source option."), true)
 end
 
-T["health"]["reports ok for boolean notification option"] = function()
+T["health"]["reports ok for native source with no external requirements"] = function()
+	-- default source is "native" which requires no external programs
+	local results = child.check_health()
+	equal(vim.tbl_contains(results.ok, "{native} not requiring external programs."), true)
+end
+
+T["health"]["reports ok when snacks.picker module is found"] = function()
+	child.lua([[package.loaded["snacks.picker"] = { pick = function() end }]])
+
+	local results = child.check_health()
+	equal(vim.tbl_contains(results.ok, "{snacks.picker} found."), true)
+end
+
+T["health"]["reports warn when snacks.picker module is not found"] = function()
+	child.lua([[
+		package.loaded["snacks.picker"] = nil
+		package.preload["snacks.picker"] = function() error("not installed") end
+	]])
+
+	local results = child.check_health()
+	equal(vim.tbl_contains(results.warn, "{snacks.picker} not found."), true)
+end
+
+T["health"]["reports ok for notification = true"] = function()
+	child.lua([[Config.setup({ notification = true })]])
+
+	local results = child.check_health()
+	equal(vim.tbl_contains(results.ok, "{true} notification option."), true)
+end
+
+T["health"]["reports ok for notification = false"] = function()
 	child.lua([[Config.setup({ notification = false })]])
 
 	local results = child.check_health()
@@ -72,10 +108,38 @@ T["health"]["reports ok for boolean notification option"] = function()
 end
 
 T["health"]["reports ok for table notification option with valid fields"] = function()
-	child.lua([[Config.setup({ notification = { msg = "Test", annote = "Test" } })]])
+	child.lua([[Config.setup({ notification = { msg = "Test", clr = "Cleared", annote = "Test" } })]])
 
 	local results = child.check_health()
 	equal(vim.tbl_contains(results.ok, "{notification} notification option."), true)
+end
+
+T["health"]["reports error for notification table with non-string msg"] = function()
+	child.lua([[Config.setup({ notification = { msg = 123, clr = "x", annote = "x" } })]])
+
+	local results = child.check_health()
+	equal(vim.tbl_contains(results.error, "{notification} invalid notification option."), true)
+end
+
+T["health"]["reports error for notification table with non-string clr"] = function()
+	child.lua([[Config.setup({ notification = { clr = false } })]])
+
+	local results = child.check_health()
+	equal(vim.tbl_contains(results.error, "{notification} invalid notification option."), true)
+end
+
+T["health"]["reports error for notification table with non-string annote"] = function()
+	child.lua([[Config.setup({ notification = { annote = 999 } })]])
+
+	local results = child.check_health()
+	equal(vim.tbl_contains(results.error, "{notification} invalid notification option."), true)
+end
+
+T["health"]["reports error for notification table with missing fields"] = function()
+	child.lua([[Config.opts.notification = {}]])
+
+	local results = child.check_health()
+	equal(vim.tbl_contains(results.error, "{notification} invalid notification option."), true)
 end
 
 T["health"]["reports error for invalid notification option"] = function()

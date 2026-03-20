@@ -38,7 +38,10 @@ local function check_configuration()
 	if type(config.opts.notification) == "boolean" then
 		vim.health.ok("{" .. tostring(config.opts.notification) .. "} notification option.")
 	elseif type(config.opts.notification) == "table" then
-		if type(config.opts.notification.msg) == "string" and type(config.opts.notification.annote) == "string" then
+		if type(config.opts.notification.msg) == "string"
+			and type(config.opts.notification.clr) == "string"
+			and type(config.opts.notification.annote) == "string"
+		then
 			vim.health.ok("{notification} notification option.")
 		else
 			vim.health.error("{notification} invalid notification option.")
