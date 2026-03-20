@@ -25,7 +25,7 @@ A lightweight clipboard history manager for Neovim with a floating picker and qu
 
 - **Neovim** >= 0.9.4, see [`snacks.nvim` requirements](https://github.com/folke/snacks.nvim/?tab=readme-ov-file#%EF%B8%8F-requirements).
 
-To have support for text from outside of Neovim (optional):
+**Optionally**, to have support for text from outside of Neovim:
 - **[clipse](https://github.com/savedra1/clipse)**, a configurable TUI clipboard manager for Unix.
 > [!caution]
 > `clipse` is an external executable, and it's the user's responsibility to ensure it runs while using this plugin.
@@ -57,6 +57,7 @@ Install the plugin with your package manager:
 	keys = {
 		{ "<leader>yy", "<cmd>ClipboardHistory<cr>", desc = "Yank history to clipboard" },
 		{ "<leader>yi", "<cmd>ClipboardInsert<cr>", desc = "Insert clipboard history" },
+		{ "<leader>yc", "<cmd>ClipboardCleear<cr>", desc = "Clear clipboard history" },
 	},
 }
 ```
@@ -73,19 +74,20 @@ Below is the schema of the possible options to customise `clipboard.nvim`.
 ```lua
 {
 	-- Clipboard provider options:
-	-- native				Internal clipboard manager (supports yanked text in Neovim)
-	-- clipse				TUI clipboard manager (supports external yanked text)
+	-- native						Internal clipboard manager (supports only yanked text in Neovim)
+	-- clipse						External clipboard manager (supports external yanked text)
 	source = "native",
 
 	-- Picker provider ("snacks" is currently the only supported option)
 	picker = "snacks",
 
 	-- Possible values for notification:
-	-- false                Disable notifications
-	-- true                 Use the default message and annotation
-	-- { msg, annote }      Define a custom message and annotation
+	-- false						Disable notifications
+	-- true							Use the default message and annotation
+	-- { msg, clr, annote }			Define a custom message and annotation
 	notification = {
-		msg = "Copied to clipboard",
+		msg = "Copied from history",
+		clr = "Cleared history",
 		annote = "Clipboard",
 	},
 }

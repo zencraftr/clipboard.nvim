@@ -53,4 +53,10 @@ function M.get_entries()
 	return entries
 end
 
+---Clears clipse clipboard history.
+---@return nil
+function M.clear()
+	vim.system({ "clipse", "-clear-all" })
+end
+
 return M

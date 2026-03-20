@@ -19,7 +19,10 @@ end
 T["config"]["defaults have correct values"] = function()
 	equal(child.lua_get([[Config.defaults.picker]]), "snacks")
 	equal(child.lua_get([[Config.defaults.source]]), "native")
-	equal(child.lua_get([[Config.defaults.notification]]), { msg = "Copied to clipboard", annote = "Clipboard" })
+	equal(
+		child.lua_get([[Config.defaults.notification]]),
+		{ msg = "Copied from history", clr = "Cleared history", annote = "Clipboard" }
+	)
 end
 
 T["config"]["opts are overridden by custom values"] = function()
@@ -29,7 +32,11 @@ T["config"]["opts are overridden by custom values"] = function()
 
 	child.lua([[Config.setup({ notification = { msg = "Test notification", annote = "Test" } })]])
 	equal(child.lua_get([[Config.opts.picker]]), "snacks")
-	equal(child.lua_get([[Config.opts.notification]]), { msg = "Test notification", annote = "Test" })
+	-- deep_extend merges with defaults, so clr survives from the defaults
+	equal(
+		child.lua_get([[Config.opts.notification]]),
+		{ msg = "Test notification", clr = "Cleared history", annote = "Test" }
+	)
 end
 
 T["config"]["source option can be overridden"] = function()
