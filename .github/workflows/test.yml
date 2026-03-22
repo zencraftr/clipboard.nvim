@@ -23,7 +23,7 @@ jobs:
         uses: extractions/setup-just@v3
 
       - name: Install mini.nvim
-        run: just deps
+        run: just mini
 
       - name: Run tests
         run: just test

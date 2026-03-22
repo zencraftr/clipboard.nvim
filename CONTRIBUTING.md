@@ -37,7 +37,7 @@ As for naming and coding conventions, see the point below:
 - Use `pcall` for external operations (file I/O, JSON)
 - Return early on errors; never throw exceptions
 
-## Testing
+## 🧑‍💻 Testing
 
 Tests use [`mini.test`](https://github.com/nvim-mini/mini.test) with child Neovim process model. If you are not familiar with the `mini.test` process, we recommend follwing the [TESTING.md](https://nvim-mini.org/mini.nvim/TESTING) introduction. 
 Also, you can use the test files are present to get a better understanding how `mini.tests` is used for testing this plugin.
@@ -64,7 +64,7 @@ end
 return T
 ```
 
-## Pull Request Process
+## ❓ Pull Request
 
 Before opening a PR, you should ensure that the checklist below passes.
 
@@ -73,7 +73,7 @@ Before opening a PR, you should ensure that the checklist below passes.
 - [ ] Update documentation if needed
 - [ ] Keep changes focused and atomic
 
-## Extending the Plugin
+## 🔌 Extending the Plugin
 
 - **Picker providers**: Add to `lua/clipboard/picker/` implementing `pick(callback)`
 - **Clipboard sources**: Add to `lua/clipboard/source/` with `name`, `setup()`, `get_entries()`, `clear()`
