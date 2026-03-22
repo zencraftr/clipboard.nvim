@@ -26,16 +26,6 @@ M.defaults = {
 ---@return nil
 function M.setup(custom_opts)
 	M.opts = vim.tbl_deep_extend("force", {}, M.defaults, custom_opts or {})
-
-	-- Setup the native source YankTextPost autocommand and filepath of the history file
-	if M.opts.source == "native" then
-		require("clipboard.source." .. M.opts.source).setup()
-	end
-
-	-- Start the clipse daemon to capture clipboard events from external applications
-	if M.opts.source == "clipse" and vim.fn.executable("clipse") == 1 then
-		vim.system({ "clipse", "-listen" })
-	end
 end
 
 return M

@@ -12,6 +12,6 @@ test-file FILE:
     nvim --headless --noplugin -u ./scripts/minimal_init.lua -c "lua MiniTest.run_file('{{FILE}}')"
 
 # Run CI locally (runs all tests and checks formatting)
-act:
-	act --quiet
+ci:
+	act
 

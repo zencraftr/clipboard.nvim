@@ -21,12 +21,15 @@ local function setup_commands()
 	end, { desc = "Clear clipboard history" })
 end
 
----Setup the plugin.
+---Setup the plugin configuration, commands and sources.
 ---@param custom_opts ClipboardConfig
 ---@return nil
 function M.setup(custom_opts)
 	config.setup(custom_opts)
+
 	setup_commands()
+
+	require("clipboard.source." .. config.opts.source).setup()
 end
 
 return M

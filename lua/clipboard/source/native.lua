@@ -1,14 +1,14 @@
----@type NativeEntry[]
-local _history = {}
-
----@type string
-local _history_file = vim.fn.stdpath("data") .. "/clipboard.nvim/history-native.json"
-
 local util = require("clipboard.utils")
 
 local M = {}
 
 M.name = "native"
+
+---@type NativeEntry[]
+local _history = {}
+
+---@type string
+local _history_file = vim.fn.stdpath("data") .. "/clipboard.nvim/history-native.json"
 
 ---Save clipboard history to a json file.
 ---@return nil
@@ -78,24 +78,9 @@ local function _setup_commands()
 					ft = vim.bo.filetype ~= "" and vim.bo.filetype or "text",
 				}
 			)
-
 			_save()
 		end,
 	})
-end
-
----Setup the native clipboard history.
----@return nil
-function M.setup()
-	-- Create the clipboard.nvim directory if not already present
-	local dir = vim.fn.fnamemodify(_history_file, ":h")
-	if vim.fn.isdirectory(dir) == 0 then
-		vim.fn.mkdir(dir, "p")
-	end
-
-	_load()
-
-	_setup_commands()
 end
 
 ---Fetches clipboard history entries from native clipboard history.
@@ -118,6 +103,20 @@ end
 function M.clear()
 	_history = {}
 	_save()
+end
+
+---Setup the native clipboard history.
+---@return nil
+function M.setup()
+	-- Create the clipboard.nvim directory if not already present
+	local dir = vim.fn.fnamemodify(_history_file, ":h")
+	if vim.fn.isdirectory(dir) == 0 then
+		vim.fn.mkdir(dir, "p")
+	end
+
+	_load()
+
+	_setup_commands()
 end
 
 return M

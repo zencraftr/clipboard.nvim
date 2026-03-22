@@ -95,6 +95,7 @@ Helpers.new_child_neovim = function()
 			Core = require('clipboard.core')
 			Health = require('clipboard.health')
 			Native = require('clipboard.source.native')
+			Native.setup()
 		]])
 	end
 

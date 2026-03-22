@@ -59,4 +59,11 @@ function M.clear()
 	vim.system({ "clipse", "-clear-all" })
 end
 
+---Setup the native clipboard history.
+---@return nil
+function M.setup()
+	-- Clipse listening for copy event
+	vim.system({ "clipse", "-listen" }, { text = true }, function() end)
+end
+
 return M
