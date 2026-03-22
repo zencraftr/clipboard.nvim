@@ -1,5 +1,5 @@
 # Install mini.test (mini.nvim's testing framework)
-deps:
+mini:
 	mkdir -p deps
 	git clone --filter=blob:none https://github.com/nvim-mini/mini.nvim deps/mini.nvim
 
