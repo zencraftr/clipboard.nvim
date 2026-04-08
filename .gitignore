@@ -1,2 +1,5 @@
 # exclude mini.nvim
 deps/
+
+# exlude repro folder for testing and reporting issues
+.repro/

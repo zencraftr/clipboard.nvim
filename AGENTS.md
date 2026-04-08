@@ -13,9 +13,6 @@ just test
 
 # Run a specific test file
 just test-file tests/test_config.lua
-
-# Run CI locally (tests + typecheck)
-just ci
 ```
 
 ### CI Workflows
