@@ -4,25 +4,28 @@ load(vim.fn.system("curl -s https://raw.githubusercontent.com/folke/lazy.nvim/ma
 local plugins = {
 	--TODO: Change the configuration for clipboard.nvim as needed.
 	{
-		"zencraftr/clipboard.nvim",
-		dependencies = {
-			-- "folke/snacks.nvim",
-			"nvim-telescope/telescope.nvim",
-		},
-		opts = {
-			source = "native",
-			-- NOTE: You will need to have clipse installed before running this plugin.
-			-- source = "clipse",
+		{
+			-- TODO: Change the repository close location
+			dir = os.getenv("HOME") .. "/Projects/clipboard.nvim",
+			name = "clipboard.nvim",
 
-			picker = "telescope",
+			opts = {
+				source = "native",
+				-- NOTE: You will need to have clipse installed before running this plugin.
+				-- source = "clipse",
 
-			-- Change the notification as per your config where the bug occured.
-			notification = {
-				msg = "Copied from history",
-				clr = "Cleared history",
-				annote = "Clipboard",
+				picker = "telescope",
+
+				-- Change the notification as per your config where the bug occured.
+				notification = {
+					msg = "Copied from history",
+					clr = "Cleared history",
+					annote = "Clipboard",
+				},
 			},
 		},
+		-- "folke/snacks.nvim",
+		"nvim-telescope/telescope.nvim",
 	},
 }
 
